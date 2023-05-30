@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt"
-import {db} from './database/database.connection.js'
+import { db } from "../database/database.connection.js"
 
 export async function signUpRepository(body){
     const {name, email, password, image} = body
