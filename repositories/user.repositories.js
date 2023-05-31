@@ -9,6 +9,7 @@ export async function signUpRepository(body){
 }
 export async function singInRepository(body) {
   const { email, password } = body;
+
   try {
     const result = await db.query(
       `SELECT user_id, username, user_photo, user_password  
@@ -31,6 +32,7 @@ export async function singInRepository(body) {
     }
 
     return null; // Retorna null caso não haja correspondência de email ou senha
+
   } catch (err) {
     console.log(err.message);
     return err;
