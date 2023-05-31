@@ -7,5 +7,6 @@ import { postPosts } from "../controllers/post.controllers.js";
 const postsRouter = Router()
 
 postsRouter.post("/post", authValidation, validateSchema(postSchema), postPosts)
+postsRouter.get("/hashtags")
 
 export default postsRouter
