@@ -12,5 +12,6 @@ export async function postHashtagsDB(hashtag, post_id){
 
 export async function getHashtagsDB(){
     return db.query(`SELECT hashtags.hashtag_id, hashtags.hashtag_tag, COUNT(hastags.hashtag_tag) AS total_hashtag
-                    FROM hashtags`)
+                    FROM hashtags
+                    ORDER BY DESC total_hashtag`)
 }
