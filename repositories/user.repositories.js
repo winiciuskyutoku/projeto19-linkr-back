@@ -19,9 +19,9 @@ export async function signUpRepository(body){
         );
 
         if (result.rowCount > 0) {
-        const passwordMatch = bcrypt.compareSync(password, result.rows[0].user_password);
+            const passwordMatch = bcrypt.compareSync(password, result.rows[0].user_password);
         
-        
+            
             if (passwordMatch) {
                 return result
             }
@@ -29,12 +29,9 @@ export async function signUpRepository(body){
         }
 
 
-
-        return null; 
-      } catch (err) {
-        
-          throw err;
-      }
+            return null; 
+        } catch (err) {
+         
+            throw err;
+        }
     }
-
-
