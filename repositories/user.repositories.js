@@ -17,18 +17,22 @@ export async function singInRepository(body) {
        WHERE user_email=$1`,
       [email]
     );
-    
-    if (result.rowCount > 0) {
-    
-      const passwordMatch = bcrypt.compareSync(password, result.rows[0].user_password);
-    
-      
-        if (passwordMatch) {
-        return result;
+
+    if (result.rows.length > 0) {
+      const user = result.rows[0];
+      const passwordMatch = bcrypt.compareSync(password, user.user_password);
+
+      if (passwordMatch) {
+        return {
+          user_id: user.user_id,
+          username: user.username,
+          user_photo: user.user_photo,
+        };
       }
     }
 
-    return null; 
+    return null; // Retorna null caso não haja correspondência de email ou senha
+
   } catch (err) {
     console.log(err.message);
     return err;
