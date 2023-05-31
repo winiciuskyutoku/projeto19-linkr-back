@@ -9,6 +9,7 @@ export async function signUpRepository(body){
 }
 export async function singInRepository(body) {
   const { email, password } = body;
+
   try {
     const result = await db.query(
       `SELECT user_id, username, user_photo, user_password  
@@ -16,21 +17,18 @@ export async function singInRepository(body) {
        WHERE user_email=$1`,
       [email]
     );
-
-    if (result.rows.length > 0) {
-      const user = result.rows[0];
-      const passwordMatch = bcrypt.compareSync(password, user.user_password);
-
-      if (passwordMatch) {
-        return {
-          user_id: user.user_id,
-          username: user.username,
-          user_photo: user.user_photo,
-        };
+    
+    if (result.rowCount > 0) {
+    
+      const passwordMatch = bcrypt.compareSync(password, result.rows[0].user_password);
+    
+      
+        if (passwordMatch) {
+        return result;
       }
     }
 
-    return null; // Retorna null caso não haja correspondência de email ou senha
+    return null; 
   } catch (err) {
     console.log(err.message);
     return err;
