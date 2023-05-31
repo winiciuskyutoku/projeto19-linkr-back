@@ -15,22 +15,24 @@ export async function signUp(req, res){
 
 export async function singIn (req, res) {
     try{
-        const result = singInRepository(req.body)
+        const result = await singInRepository(req.body)
+        
         if(!result || result === null) {
             return res.status(400).send("email ou senha estão incorretos")
         }
-        console.log(result.rows[0])
-        res.status(200).send(result.rows[0])
+        
+      
+          res.status(200).send({
+            user_id: result.rows[0].user_id,
+            username: result.rows[0].username,
+            user_photo: result.rows[0].user_photo,
+          });
+         
 
-    if (!result) {
-      res.status(400).send("email ou senha estão incorretos");
+    }catch(err){
+        
+         res.status(500).send(err.mesasge)
     }
-    if (result.rowCount > 0) {
-      console.log("RESULT", result);
-      res.status(200).send(result.rows[0]);
-    }
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send(err.message);
-  }
+
 }
+
