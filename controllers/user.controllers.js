@@ -12,6 +12,7 @@ export async function signUp(req, res){
     }
 }
 
+
 export async function singIn (req, res) {
     try{
         const result = await singInRepository(req.body)
@@ -20,15 +21,18 @@ export async function singIn (req, res) {
             return res.status(400).send("email ou senha estão incorretos")
         }
         
-        res.status(200).send({
-          user_id: result.rows[0].user_id,
-          username: result.rows[0].username,
-          user_photo: result.rows[0].user_photo,
-        });
+      
+          res.status(200).send({
+            user_id: result.rows[0].user_id,
+            username: result.rows[0].username,
+            user_photo: result.rows[0].user_photo,
+          });
+         
 
     }catch(err){
-        console.log ("erro no controller", err)
+        
          res.status(500).send(err.mesasge)
     }
 
 }
+

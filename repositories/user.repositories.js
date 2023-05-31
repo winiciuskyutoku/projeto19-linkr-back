@@ -7,6 +7,7 @@ export async function signUpRepository(body){
     const hash = bcrypt.hashSync(password, 10)
     return await db.query(`INSERT INTO users (username, user_password, user_photo, user_email) VALUES ($1, $2, $3, $4);`, [name, hash, image, email])
 }
+
     export async function singInRepository(body) {
     const { email, password } = body;
     try {
@@ -21,16 +22,19 @@ export async function signUpRepository(body){
         const passwordMatch = bcrypt.compareSync(password, result.rows[0].user_password);
         
         
-        if (passwordMatch) {
-            return result
-        }
+            if (passwordMatch) {
+                return result
+            }
 
         }
+
 
 
         return null; 
-    } catch (err) {
-        console.log("erro na query", err.message);
-        throw err;
+      } catch (err) {
+        
+          throw err;
+      }
     }
-    }
+
+
