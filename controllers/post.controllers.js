@@ -2,6 +2,7 @@ import verifyHashtag from "../middlewares/verifyHashtag.js"
 import { getHashtagsDB, postHashtagsDB, postPostsDB } from "../repositories/post.repositories.js"
 
 
+
 export async function postPosts(req, res) {
     const { user_id } = res.locals.session
     const { post_link, post_comment } = req.body
