@@ -53,6 +53,7 @@ export async function getProfile(req, res) {
     const { id } = req.params;
     try{
         const userProfile = await getUserByIdDB(id);
+        console.log(userProfile.rows[0]);
         res.send(userProfile.rows);
     } catch (error) {
         res.status(500).send(error.message);
