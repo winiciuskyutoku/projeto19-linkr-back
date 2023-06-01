@@ -1,5 +1,5 @@
 import verifyHashtag from "../middlewares/verifyHashtag.js"
-import { postHashtags, postPostsDB } from "../repositories/post.repositories.js"
+import { getPostRepository, postHashtags, postPostsDB } from "../repositories/post.repositories.js"
 
 export async function postPosts(req, res) {
     const { user_id } = res.locals.session
@@ -15,6 +15,17 @@ export async function postPosts(req, res) {
         console.log(user_id, post_link, post_comment, post_id, hashtags)
         res.sendStatus(201)
     } catch (err) {
+        res.status(500).send(err.message)
+    }
+}
+
+export async function getPosts(req, res){
+
+    try {
+        const result = await getPostRepository()
+
+        res.send(result)
+    } catch (err){
         res.status(500).send(err.message)
     }
 }

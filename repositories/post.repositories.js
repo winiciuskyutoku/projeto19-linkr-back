@@ -9,3 +9,10 @@ export async function postHashtags(hashtag, post_id){
     await db.query(`INSERT INTO hashtags(hashtag_tag, post_id)
                     VALUES ($1, $2)`, [hashtag, post_id])
 }
+
+export async function getPostRepository(){
+    const result = await db.query(`SELECT * FROM posts GROUP BY created_at DESC LIMIT 20;`)
+
+    
+    return result.rows
+}
