@@ -13,7 +13,6 @@ export async function postHashtagsDB(hashtag, post_id){
 
 export async function getPostRepository(){
     const result = await db.query(`SELECT * FROM posts ORDER BY created_at DESC LIMIT 20;`)
-
     
     return result.rows
 }
@@ -21,5 +20,5 @@ export async function getPostRepository(){
 export async function getHashtagsDB(){
     return db.query(`SELECT hashtags.hashtag_id, hashtags.hashtag_tag, COUNT(hastags.hashtag_tag) AS total_hashtag
                     FROM hashtags
-                    ORDER BY DESC total_hashtag`)
+                    ORDER BY DESC total_hashtag;`)
 }

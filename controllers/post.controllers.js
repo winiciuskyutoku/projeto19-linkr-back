@@ -25,13 +25,12 @@ export async function postPosts(req, res) {
 
 
 export async function getPosts(req, res){
-
     try {
         const result = await getPostRepository()
 
         res.send(result)
     } catch (err){
-      res.status(500).send(err.message)
+         res.status(500).send(err.message)
     }
  }
 
