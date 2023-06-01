@@ -10,6 +10,14 @@ export async function postHashtagsDB(hashtag, post_id){
                     VALUES ($1, $2)`, [hashtag, post_id])
 }
 
+
+export async function getPostRepository(){
+    const result = await db.query(`SELECT * FROM posts GROUP BY created_at DESC LIMIT 20;`)
+
+    
+    return result.rows
+}
+
 export async function getHashtagsDB(){
     return db.query(`SELECT hashtags.hashtag_id, hashtags.hashtag_tag, COUNT(hastags.hashtag_tag) AS total_hashtag
                     FROM hashtags
