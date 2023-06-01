@@ -1,6 +1,7 @@
-import { signUpRepository, singInRepository, getUsersDB } from "../repositories/user.repositories.js"
+ import { signUpRepository, singInRepository } from "../repositories/user.repositories.js"
+ import authService from "../services/authService.js";
 
-export async function signUp(req, res) {
+export async function signUp(req, res){
     try {
         await signUpRepository(req.body)
 
@@ -19,18 +20,19 @@ export async function singIn(req, res) {
         if (!result || result === null) {
             return res.status(400).send("email ou senha estão incorretos")
         }
-
-
-        res.status(200).send({
+        
+          const token = authService.generateWebToken(result.rows[0].user_id)
+          res.status(200).send({
             user_id: result.rows[0].user_id,
             username: result.rows[0].username,
             user_photo: result.rows[0].user_photo,
-        });
+            user_token: token
+          });
+         
 
-
-    } catch (err) {
-
-        res.status(500).send(err.message)
+    }catch(err){
+         console.log(err.message)
+         res.status(500).send(err.mesasge)
     }
 
 }

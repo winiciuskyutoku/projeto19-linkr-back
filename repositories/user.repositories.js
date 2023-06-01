@@ -25,11 +25,16 @@ export async function singInRepository(body) {
                 return result
             }
         }
-        return null;
-    } catch (err) {
-        throw err;
+
+
+
+        return null; 
+      } catch (err) {
+            console.log(err.message);
+          return err.message;
+      }
     }
-}
+
 
 export async function getUsersDB(search) {
     return await db.query('SELECT * FROM users WHERE username LIKE $1 || \'%\' OR username LIKE \'% \' || $1 || \'%\';', [search]);
