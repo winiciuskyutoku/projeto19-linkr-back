@@ -12,7 +12,7 @@ export async function postHashtagsDB(hashtag, post_id){
 
 
 export async function getPostRepository(){
-    const result = await db.query(`SELECT * FROM posts GROUP BY created_at DESC LIMIT 20;`)
+    const result = await db.query(`SELECT * FROM posts ORDER BY created_at DESC LIMIT 20;`)
 
     
     return result.rows
