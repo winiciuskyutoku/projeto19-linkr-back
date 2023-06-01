@@ -32,8 +32,8 @@ export async function signUpRepository(body){
 
         return null; 
       } catch (err) {
-        
-          throw err;
+            console.log(err.message);
+          return err.message;
       }
     }
 

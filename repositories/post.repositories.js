@@ -1,4 +1,4 @@
-import { db } from "../database/database.connection";
+import { db } from "../database/database.connection.js";
 
 export async function postPostsDB(user_id, post_link, post_comment) {
     return await db.query(`INSERT INTO posts (user_id, post_link, post_comment)
