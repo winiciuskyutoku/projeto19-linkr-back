@@ -1,6 +1,5 @@
 import verifyHashtag from "../middlewares/verifyHashtag.js"
-import { getHashtagsDB, postHashtagsDB, postPostsDB } from "../repositories/post.repositories.js"
-
+import { getPostRepository, getHashtagsDB, postHashtagsDB, postPostsDB } from "../repositories/post.repositories.js"
 
 
 export async function postPosts(req, res) {
@@ -23,6 +22,19 @@ export async function postPosts(req, res) {
         res.status(500).send(err.message)
     }
 }
+
+
+export async function getPosts(req, res){
+
+    try {
+        const result = await getPostRepository()
+
+        res.send(result)
+    } catch (err){
+      res.status(500).send(err.message)
+    }
+ }
+
 
 export async function getHashtags(req, res){
     try{
