@@ -5,6 +5,7 @@ import { postSchema } from "../schemas/post.schemas.js";
 import { getHashtags, postPosts } from "../controllers/post.controllers.js";
 
 
+
 const postsRouter = Router()
 
 postsRouter.post("/post", authValidation, validateSchema(postSchema), postPosts)

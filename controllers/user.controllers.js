@@ -1,5 +1,7 @@
- import { signUpRepository, singInRepository } from "../repositories/user.repositories.js"
- import authService from "../services/authService.js";
+
+ import { signUpRepository, singInRepository, getUsersDB } from "../repositories/user.repositories.js"
+
+import authService from "../services/authService.js";
 
 export async function signUp(req, res){
     try {
