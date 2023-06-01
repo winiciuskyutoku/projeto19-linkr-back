@@ -14,4 +14,6 @@ const fetchActiveUser = async (id) => {
 
 const generateWebToken = (id) => jwt.sign({id: id}, process.env.SECRET_JWT, {expiresIn: 86000})
 
+
+
 export default { fetchActiveUser, generateWebToken };
