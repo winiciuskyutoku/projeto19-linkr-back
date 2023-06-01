@@ -32,6 +32,5 @@ export async function singInRepository(body) {
 }
 
 export async function getUsersDB(search) {
-    console.log(search)
-    return await db.query('SELECT * FROM users WHERE username LIKE $1;', ['%' + search + '%']);
+    return await db.query('SELECT * FROM users WHERE username LIKE $1 || \'%\' OR username LIKE \'% \' || $1 || \'%\';', [search]);
 }

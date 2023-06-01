@@ -8,6 +8,6 @@ const userRouter = Router();
 
 userRouter.post("/sign-up", schemaValidation(signUpValidate), signUpValidation, signUp);
 userRouter.post("/sign-in", schemaValidation(loginSchema), singIn);
-userRouter.get("/get-users", schemaValidation(searchValidate), getUsers);
+userRouter.post("/get-users", schemaValidation(searchValidate), getUsers);
 
 export default userRouter;
