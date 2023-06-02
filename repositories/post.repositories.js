@@ -35,8 +35,9 @@ export async function getPostRepository() {
     return result.rows
 }
 
-export async function getHashtagsDB() {
-    return db.query(`SELECT hashtags.hashtag_id, hashtags.hashtag_tag, COUNT(hastags.hashtag_tag) AS total_hashtag
-                    FROM hashtags
-                    ORDER BY DESC total_hashtag;`)
+export async function getHashtagsDB(){
+    return db.query(`SELECT hashtag.hashtag_id, hashtag.hashtag_tag, COUNT(hastag.hashtag_tag) AS total_hashtag
+                    FROM hashtag
+                    ORDER BY total_hashtag DESC;`)
+
 }

@@ -1,7 +1,6 @@
-
- import { signUpRepository, singInRepository, getUsersDB } from "../repositories/user.repositories.js"
-
-import authService from "../services/authService.js";
+ import { signUpRepository, singInRepository, getUsersDB, getUserByIdDB } from "../repositories/user.repositories.js"
+ import authService from "../services/authService.js";
+ import sessionService from "../services/sessionService.js";
 
 export async function signUp(req, res){
     try {
@@ -24,6 +23,8 @@ export async function singIn(req, res) {
         }
         
           const token = authService.generateWebToken(result.rows[0].user_id)
+
+          sessionService.insertTokenInDatabase(token, result.rows[0].user_id)
           res.status(200).send({
             user_id: result.rows[0].user_id,
             username: result.rows[0].username,
@@ -49,3 +50,12 @@ export async function getUsers(req, res) {
     }
 }
 
+export async function getProfile(req, res){
+    const { id } = req.params;
+    try{
+        const userProfile = await getUserByIdDB(id);
+        res.send(userProfile.rows);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
