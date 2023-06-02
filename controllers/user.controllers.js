@@ -1,4 +1,4 @@
- import { signUpRepository, singInRepository } from "../repositories/user.repositories.js"
+ import { signUpRepository, singInRepository, getUsersDB, getUserByIdDB } from "../repositories/user.repositories.js"
  import authService from "../services/authService.js";
  import sessionService from "../services/sessionService.js";
 
@@ -50,3 +50,12 @@ export async function getUsers(req, res) {
     }
 }
 
+export async function getProfile(req, res){
+    const { id } = req.params;
+    try{
+        const userProfile = await getUserByIdDB(id);
+        res.send(userProfile.rows);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
