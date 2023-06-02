@@ -1,5 +1,7 @@
 import verifyHashtag from "../middlewares/verifyHashtag.js"
 import { getPostRepository, getHashtagsDB, postHashtagsDB, postPostsDB } from "../repositories/post.repositories.js"
+import urlMetadata from "url-metadata"
+import getMetaData from "metadata-scraper"
 
 
 export async function postPosts(req, res) {
@@ -24,23 +26,24 @@ export async function postPosts(req, res) {
 }
 
 
-export async function getPosts(req, res){
+export async function getPosts(req, res) {
 
     try {
         const result = await getPostRepository()
 
         res.send(result)
-    } catch (err){
-      res.status(500).send(err.message)
+    } catch (err) {
+        res.status(500).send(err.message)
     }
- }
+}
 
 
-export async function getHashtags(req, res){
-    try{
+export async function getHashtags(req, res) {
+    try {
         const result = await getHashtagsDB()
+
         res.status(200).send(result.rows)
-    } catch(err){
+    } catch (err) {
         res.status(500).send(err.message)
     }
 }
