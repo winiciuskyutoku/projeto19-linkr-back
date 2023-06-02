@@ -29,15 +29,17 @@ export async function getPostRepository() {
             },
                 (err) => {
                     console.log(err)
-            })
+                })
     }
 
     return result.rows
 }
 
-export async function getHashtagsDB(){
-    return db.query(`SELECT hashtag.hashtag_id, hashtag.hashtag_tag, COUNT(hastag.hashtag_tag) AS total_hashtag
-                    FROM hashtag
-                    ORDER BY total_hashtag DESC;`)
+export async function getHashtagsDB() {
+    return db.query(`
+    SELECT hashtag_id, hashtag_tag, COUNT(hashtag_tag) AS total_hashtag
+    FROM hashtag
+    GROUP BY hashtag_id, hashtag_tag
+    ORDER BY total_hashtag DESC;`)
 
 }
