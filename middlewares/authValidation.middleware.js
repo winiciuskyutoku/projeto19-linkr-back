@@ -8,7 +8,7 @@ export async function authValidation(req, res, next){
     console.log(token)
 
     try {
-        const session = await db.query(`SELECT * FROM sessions WHERE token = $1;`, [token])
+        const session = await db.query(`SELECT * FROM session WHERE token = $1;`, [token])
         if(session.rowCount === 0) return res.status(401).send("Sem autorizacao")
 
         res.locals.session = session.rows[0]
