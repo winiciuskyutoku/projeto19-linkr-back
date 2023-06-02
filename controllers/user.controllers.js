@@ -40,7 +40,7 @@ export async function singIn(req, res) {
 
 }
 
-/*export async function getUsers(req, res) {
+export async function getUsers(req, res) {
     const { search } = req.body;
     try {
         const allUsers = await getUsersDB(search);
@@ -48,5 +48,5 @@ export async function singIn(req, res) {
     } catch (error) {
         res.status(500).send(error.message);
     }
-}*/
+}
 
