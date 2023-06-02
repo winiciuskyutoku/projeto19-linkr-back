@@ -7,7 +7,6 @@ dotenv.config()
 export const authJWT =  (req , res , next)=>{
    
     try{
-        
         const {Authorization} = req.headers
         const parts = Authorization.split(" ")
         const [schema , token] = parts 
