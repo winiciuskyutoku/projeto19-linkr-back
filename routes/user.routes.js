@@ -1,7 +1,12 @@
 import { Router } from "express";
 import { signUpValidation } from "../middlewares/userValidation.middelware.js";
 import schemaValidation from "../middlewares/schemaValidation.middleware.js";
-import { signUp, singIn, getUsers, getProfile } from "../controllers/user.controllers.js";
+import {
+  signUp,
+  singIn,
+  getUsers,
+  getProfile
+} from "../controllers/user.controllers.js";
 import { loginSchema, signUpValidate, searchValidate } from "../schemas/userValidate.schema.js";
 
 

@@ -37,13 +37,15 @@ export async function singInRepository(body) {
 
 
 export async function getUsersDB(search) {
-    return await db.query('SELECT * FROM users WHERE username LIKE $1 || \'%\' OR username LIKE \'% \' || $1 || \'%\';', [search]);
+    return await db.query(`
+            SELECT * FROM users WHERE LOWER(username) LIKE LOWER($1)
+            || \'%\' OR LOWER(username) LIKE \'% \' || LOWER($1) || \'%\';`, [search]);
 }
 
 export async function getUserByIdDB(id) {
     return await db.query(`
             SELECT u.username, u.user_photo, p.*
             FROM users u
-            JOIN posts p ON p.user_id = u.user_id
+            LEFT JOIN posts p ON p.user_id = u.user_id
             WHERE u.user_id = $1;`, [id]);
 }
