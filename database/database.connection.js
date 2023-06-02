@@ -6,7 +6,6 @@ dotenv.config()
 const { Pool } = pg
 
 const configDatabase = {
-  feat_session_insert
     connectionString: process.env.DATABASE_URL
 }
 
