@@ -1,5 +1,5 @@
 import verifyHashtag from "../middlewares/verifyHashtag.js"
-import { getPostRepository, getHashtagsDB, postHashtagsDB, postPostsDB } from "../repositories/post.repositories.js"
+import { getPostRepository, getHashtagsDB, postHashtagsDB, postPostsDB, likePostDB } from "../repositories/post.repositories.js"
 import urlMetadata from "url-metadata"
 import getMetaData from "metadata-scraper"
 
@@ -45,5 +45,16 @@ export async function getHashtags(req, res) {
         res.status(200).send(result.rows)
     } catch (err) {
         res.status(500).send(err.message)
+    }
+}
+
+export async function likePost(req, res) {
+    const { id } = req.params;
+    const { user_id } = res.locals.session;
+    try {
+        await likePostDB(id, user_id);
+        res.send("Sucesso");
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 }

@@ -43,9 +43,17 @@ export async function getUsersDB(search) {
 }
 
 export async function getUserByIdDB(id) {
-    return await db.query(`
+    const userProfile = await db.query(`
             SELECT u.username, u.user_photo, p.*
             FROM users u
             LEFT JOIN posts p ON p.user_id = u.user_id
             WHERE u.user_id = $1;`, [id]);
+    const likesPosts = await db.query(`
+            SELECT l.user_id AS user_liked, p.post_id, u.username AS username_liked, u.user_photo AS user_photo_liked
+            FROM likes l
+            JOIN posts p ON p.post_id = l.post_id
+            JOIN users u ON u.user_id = l.user_id
+            WHERE p.user_id = $1;`, [id]);
+
+    return ({profile: userProfile.rows, likes: likesPosts.rows});
 }

@@ -43,3 +43,21 @@ export async function getHashtagsDB() {
     ORDER BY total_hashtag DESC;`)
 
 }
+
+export async function likePostDB(post_id, user_id) {
+    const result = await db.query(`
+                            SELECT * FROM likes WHERE post_id = $1 AND user_id = $2;`,
+        [post_id, user_id]);
+
+    if (result.rowCount) {
+        await db.query(`
+            DELETE FROM likes WHERE post_id = $1 AND user_id = $2;`,
+            [post_id, user_id]);
+        return;
+    } else {
+        await db.query(`
+            INSERT INTO likes (post_id, user_id) VALUES ($1, $2);`,
+            [post_id, user_id]);
+        return;
+    }
+}
