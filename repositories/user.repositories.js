@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt"
 import { db } from '../database/database.connection.js'
 
+import getMetaData from "metadata-scraper";
+
+
 export async function signUpRepository(body) {
     const { name, email, password, image } = body
 
@@ -55,5 +58,17 @@ export async function getUserByIdDB(id) {
             JOIN users u ON u.user_id = l.user_id
             WHERE p.user_id = $1;`, [id]);
 
-    return ({profile: userProfile.rows, likes: likesPosts.rows});
+    for (let i = 0; i < userProfile.rows.length; i++) {
+        if(!userProfile.rows[i].post_link){
+            break;
+        }
+        const metadata = await getMetaData(userProfile.rows[i].post_link);
+
+        userProfile.rows[i].image = metadata.image
+        userProfile.rows[i].description = metadata.description
+        userProfile.rows[i].url = metadata.url
+        userProfile.rows[i].title = metadata.title
+    }
+
+    return ({ profile: userProfile.rows, likes: likesPosts.rows });
 }

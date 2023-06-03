@@ -46,7 +46,7 @@ export async function getHashtagsDB() {
 
 export async function likePostDB(post_id, user_id) {
     const result = await db.query(`
-                            SELECT * FROM likes WHERE post_id = $1 AND user_id = $2;`,
+        SELECT * FROM likes WHERE post_id = $1 AND user_id = $2;`,
         [post_id, user_id]);
 
     if (result.rowCount) {
