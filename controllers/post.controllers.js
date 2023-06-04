@@ -8,17 +8,13 @@ export async function postPosts(req, res) {
     const { user_id } = res.locals.session
     const { post_link, post_comment } = req.body
     try {
-        const { rows: [post_id] } = await postPostsDB(user_id, post_link, post_comment)
+        const {rows: [post_id]} = await postPostsDB(user_id, post_link, post_comment)
         const hashtags = verifyHashtag(post_comment)
-        console.log(hashtags)
+        console.log(post_id)
 
         if (hashtags.length > 0) {
-            hashtags.forEach(async (hashtag) => {
-                await postHashtagsDB(hashtag, post_id.id)
-            })
+            postHashtagsDB(hashtags, post_id.post_id)
         }
-
-        console.log(user_id, post_link, post_comment, post_id, hashtags)
         res.sendStatus(201)
     } catch (err) {
         res.status(500).send(err.message)
