@@ -10,7 +10,7 @@ export async function signUp(req, res){
         }
         res.status(201).send({ message: "Conta criada com sucesso." })
     } catch (err) {
-
+       console.log("erro", err)
         res.status(500).send(err.mesasge)
     }
 }
