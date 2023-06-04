@@ -8,7 +8,13 @@ export async function signUpRepository(body) {
     const { name, email, password, image } = body
 
     const hash = bcrypt.hashSync(password, 10)
-    return await db.query(`INSERT INTO users (username, user_password, user_photo, user_email) VALUES ($1, $2, $3, $4);`, [name, hash, image, email])
+    const result = await db.query(
+      `INSERT INTO users (username, user_password, user_photo, user_email) 
+       VALUES ($1, $2, $3, $4);`,
+      [name, hash, image, email]
+    );
+ 
+    return result 
 }
 
 export async function singInRepository(body) {
@@ -38,16 +44,6 @@ export async function singInRepository(body) {
     }
 }
 
-export async function getUserByEmail(email){
-    try {
-        result = await db.query(`SELECT user_email FROM users $1 `, [email])
-        return result
-    } catch (error) {
-        return error.message
-    }
-
-
-}
 export async function getUsersDB(search) {
     return await db.query(`
             SELECT * FROM users WHERE LOWER(username) LIKE LOWER($1)

@@ -4,9 +4,11 @@
 
 export async function signUp(req, res){
     try {
-        await signUpRepository(req.body)
-
-        res.status(201).send({ message: "Conta criado com sucesso." })
+        const result = await signUpRepository(req.body)
+        if(!result) {
+            res.status(400).send("error in sign up request")
+        }
+        res.status(201).send({ message: "Conta criada com sucesso." })
     } catch (err) {
 
         res.status(500).send(err.mesasge)
