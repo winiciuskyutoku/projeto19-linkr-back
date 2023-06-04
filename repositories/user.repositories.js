@@ -38,7 +38,16 @@ export async function singInRepository(body) {
     }
 }
 
+export async function getUserByEmail(email){
+    try {
+        result = await db.query(`SELECT user_email FROM users $1 `, [email])
+        return result
+    } catch (error) {
+        return error.message
+    }
 
+
+}
 export async function getUsersDB(search) {
     return await db.query(`
             SELECT * FROM users WHERE LOWER(username) LIKE LOWER($1)
