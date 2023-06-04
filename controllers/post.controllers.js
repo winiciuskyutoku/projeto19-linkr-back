@@ -10,7 +10,7 @@ export async function postPosts(req, res) {
     try {
         const { rows: [post_id] } = await postPostsDB(user_id, post_link, post_comment)
         const hashtags = verifyHashtag(post_comment)
-
+        console.log(hashtags)
 
         if (hashtags.length > 0) {
             hashtags.forEach(async (hashtag) => {
