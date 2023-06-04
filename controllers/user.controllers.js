@@ -4,11 +4,13 @@
 
 export async function signUp(req, res){
     try {
-        await signUpRepository(req.body)
-
-        res.status(201).send({ message: "Conta criado com sucesso." })
+        const result = await signUpRepository(req.body)
+        if(!result) {
+            res.status(400).send("error in sign up request")
+        }
+        res.status(201).send({ message: "Conta criada com sucesso." })
     } catch (err) {
-
+       console.log("erro", err)
         res.status(500).send(err.mesasge)
     }
 }
@@ -22,7 +24,9 @@ export async function singIn(req, res) {
             return res.status(400).send("email ou senha estão incorretos")
         }
         
+        console.log(result.rows[0])
           const token = authService.generateWebToken(result.rows[0].user_id)
+          console.log(token);
 
           sessionService.insertTokenInDatabase(token, result.rows[0].user_id)
           res.status(200).send({
@@ -54,7 +58,7 @@ export async function getProfile(req, res){
     const { id } = req.params;
     try{
         const userProfile = await getUserByIdDB(id);
-        res.send(userProfile.rows);
+        res.send(userProfile);
     } catch (error) {
         res.status(500).send(error.message);
     }
