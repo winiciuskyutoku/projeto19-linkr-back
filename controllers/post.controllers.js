@@ -1,14 +1,14 @@
 import verifyHashtag from "../middlewares/verifyHashtag.js"
-import { getPostRepository, getHashtagsDB, postHashtagsDB, postPostsDB, likePostDB } from "../repositories/post.repositories.js"
-import urlMetadata from "url-metadata"
-import getMetaData from "metadata-scraper"
+import { postHashtagsDB } from "../repositories/hashtag.repository.js"
+import { getPostRepository, postPostsDB, likePostDB } from "../repositories/post.repositories.js"
+
 
 
 export async function postPosts(req, res) {
     const { user_id } = res.locals.session
     const { post_link, post_comment } = req.body
     try {
-        const {rows: [post_id]} = await postPostsDB(user_id, post_link, post_comment)
+        const { rows: [post_id] } = await postPostsDB(user_id, post_link, post_comment)
         const hashtags = verifyHashtag(post_comment)
         console.log(post_id)
 
@@ -28,17 +28,6 @@ export async function getPosts(req, res) {
         const result = await getPostRepository()
 
         res.send(result)
-    } catch (err) {
-        res.status(500).send(err.message)
-    }
-}
-
-
-export async function getHashtags(req, res) {
-    try {
-        const result = await getHashtagsDB()
-
-        res.status(200).send(result.rows)
     } catch (err) {
         res.status(500).send(err.message)
     }
