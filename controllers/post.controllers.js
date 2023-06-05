@@ -1,6 +1,7 @@
 import verifyHashtag from "../middlewares/verifyHashtag.js"
-import { postHashtagsDB } from "../repositories/hashtag.repository.js"
-import { getPostRepository, postPostsDB, likePostDB } from "../repositories/post.repositories.js"
+import { getPostRepository, getHashtagsDB, postPostsDB, deletePostRepository, likePostDB } from "../repositories/post.repositories.js"
+import urlMetadata from "url-metadata"
+import getMetaData from "metadata-scraper"
 
 
 
@@ -41,5 +42,17 @@ export async function likePost(req, res) {
         res.send("Sucesso");
     } catch (error) {
         res.status(500).send(error.message);
+    }
+}
+
+export async function deletePost(req, res){
+    const {id} = req.params
+
+    try {
+        await deletePostRepository(id)
+
+        res.sendStatus(202)
+    } catch (err){
+        res.status(500).send(err.message)
     }
 }

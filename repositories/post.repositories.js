@@ -31,6 +31,21 @@ export async function getPostRepository() {
     return result.rows
 }
 
+
+export async function getHashtagsDB() {
+    return db.query(`
+    SELECT hashtag_id, hashtag_tag, COUNT(hashtag_tag) AS total_hashtag
+    FROM hashtag
+    GROUP BY hashtag_id, hashtag_tag
+    ORDER BY total_hashtag DESC;`)
+
+}
+
+export async function deletePostRepository(id){
+
+    return await db.query(`DELETE FROM posts WHERE post_id = $1;`, [id])
+}
+
 export async function likePostDB(post_id, user_id) {
     const result = await db.query(`
         SELECT * FROM likes WHERE post_id = $1 AND user_id = $2;`,
