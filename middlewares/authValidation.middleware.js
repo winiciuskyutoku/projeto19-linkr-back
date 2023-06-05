@@ -3,9 +3,7 @@ import { db } from "../database/database.connection.js";
 export async function authValidation(req, res, next){
     const {authorization} = req.headers
     const token = authorization?.replace("Bearer ", "")
-    if(!token) res.sendStatus(401)
-
-    console.log(token)
+    if(!token) return res.sendStatus(401)
 
     try {
         const session = await db.query(`SELECT * FROM session WHERE session_token = $1;`, [token])

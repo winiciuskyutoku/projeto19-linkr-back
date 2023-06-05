@@ -1,7 +1,8 @@
 import verifyHashtag from "../middlewares/verifyHashtag.js"
-import { getPostRepository, getHashtagsDB, postHashtagsDB, postPostsDB, deletePostRepository } from "../repositories/post.repositories.js"
+import { getPostRepository, getHashtagsDB, postPostsDB, deletePostRepository, likePostDB } from "../repositories/post.repositories.js"
 import urlMetadata from "url-metadata"
 import getMetaData from "metadata-scraper"
+
 
 
 export async function postPosts(req, res) {
@@ -10,15 +11,11 @@ export async function postPosts(req, res) {
     try {
         const { rows: [post_id] } = await postPostsDB(user_id, post_link, post_comment)
         const hashtags = verifyHashtag(post_comment)
-
+        console.log(post_id)
 
         if (hashtags.length > 0) {
-            hashtags.forEach(async (hashtag) => {
-                await postHashtagsDB(hashtag, post_id.id)
-            })
+            postHashtagsDB(hashtags, post_id.post_id)
         }
-
-        console.log(user_id, post_link, post_comment, post_id, hashtags)
         res.sendStatus(201)
     } catch (err) {
         res.status(500).send(err.message)
@@ -37,14 +34,14 @@ export async function getPosts(req, res) {
     }
 }
 
-
-export async function getHashtags(req, res) {
+export async function likePost(req, res) {
+    const { id } = req.params;
+    const { user_id } = res.locals.session;
     try {
-        const result = await getHashtagsDB()
-
-        res.status(200).send(result.rows)
-    } catch (err) {
-        res.status(500).send(err.message)
+        await likePostDB(id, user_id);
+        res.send("Sucesso");
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 }
 
