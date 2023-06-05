@@ -43,3 +43,8 @@ export async function getHashtagsDB() {
     ORDER BY total_hashtag DESC;`)
 
 }
+
+export async function deletePostRepository(id){
+
+    return await db.query(`DELETE FROM posts WHERE post_id = $1;`, [id])
+}
