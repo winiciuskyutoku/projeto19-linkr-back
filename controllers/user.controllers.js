@@ -24,9 +24,7 @@ export async function singIn(req, res) {
             return res.status(400).send("email ou senha estão incorretos")
         }
         
-        console.log(result.rows[0])
           const token = authService.generateWebToken(result.rows[0].user_id)
-          console.log(token);
 
           sessionService.insertTokenInDatabase(token, result.rows[0].user_id)
           res.status(200).send({
