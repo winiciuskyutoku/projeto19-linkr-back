@@ -1,7 +1,6 @@
 import verifyHashtag from "../middlewares/verifyHashtag.js"
-import { getPostRepository, getHashtagsDB, postPostsDB, deletePostRepository, likePostDB } from "../repositories/post.repositories.js"
-import urlMetadata from "url-metadata"
-import getMetaData from "metadata-scraper"
+import { getPostRepository, postPostsDB, deletePostRepository, likePostDB, getNewPostsAmountDB } from "../repositories/post.repositories.js"
+import { postHashtagsDB } from "../repositories/hashtag.repository.js"
 
 
 
@@ -34,6 +33,18 @@ export async function getPosts(req, res) {
     }
 }
 
+export async function getNewPostsAmount(req, res) {
+    const {last_atualization} = req.body
+    const { user_id } = res.locals.session
+    try {
+        const result = await getNewPostsAmountDB(last_atualization, user_id)
+        console.log(result.rowCount, last_atualization, user_id)
+        res.send(result.rows)
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
+}
+
 export async function likePost(req, res) {
     const { id } = req.params;
     const { user_id } = res.locals.session;
@@ -45,14 +56,14 @@ export async function likePost(req, res) {
     }
 }
 
-export async function deletePost(req, res){
-    const {id} = req.params
+export async function deletePost(req, res) {
+    const { id } = req.params
 
     try {
         await deletePostRepository(id)
 
         res.sendStatus(202)
-    } catch (err){
+    } catch (err) {
         res.status(500).send(err.message)
     }
 }

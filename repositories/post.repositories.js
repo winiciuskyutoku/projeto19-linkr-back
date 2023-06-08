@@ -8,11 +8,23 @@ export async function postPostsDB(user_id, post_link, post_comment) {
                     VALUES ($1, $2, $3) RETURNING post_id`, [user_id, post_link, post_comment])
 }
 
-
+export async function getNewPostsAmountDB(last_atualization, user_id) {
+    return await db.query(`
+    SELECT post_id 
+    FROM posts
+    JOIN follow ON follow.followed_id = posts.user_id
+    WHERE follow.follower_id = $2
+    AND posts.created_at > $1`,[last_atualization, user_id])
+}
 
 
 export async function getPostRepository() {
-    const result = await db.query(`SELECT posts.*, users.username, users.user_photo  FROM posts JOIN users ON posts.user_id = users.user_id ORDER BY created_at DESC LIMIT 20;`)
+    const result = await db.query(`
+    SELECT posts.*, users.username, users.user_photo  
+    FROM posts 
+    JOIN users ON posts.user_id = users.user_id 
+    ORDER BY created_at DESC 
+    LIMIT 5;`)
 
     for (let i = 0; i < result.rows.length; i++) {
 
@@ -41,7 +53,7 @@ export async function getHashtagsDB() {
 
 }
 
-export async function deletePostRepository(id){
+export async function deletePostRepository(id) {
 
     return await db.query(`DELETE FROM posts WHERE post_id = $1;`, [id])
 }
