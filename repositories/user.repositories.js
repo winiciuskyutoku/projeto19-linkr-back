@@ -77,3 +77,16 @@ export async function getUserByIdDB(id) {
 
     return ({ profile: userProfile.rows, likes: likesPosts.rows });
 }
+
+
+export async function getByEmail(email){
+           try {
+             const result = await db.query(
+               `SELECT * FROM users WHERE user_email= $1`,
+               [email]
+             );
+             return result;
+           } catch (error) {
+             return error.message;
+           }
+}

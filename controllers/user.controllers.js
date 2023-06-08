@@ -1,4 +1,4 @@
- import { signUpRepository, singInRepository, getUsersDB, getUserByIdDB } from "../repositories/user.repositories.js"
+ import { signUpRepository, singInRepository, getUsersDB, getUserByIdDB, getByEmail} from "../repositories/user.repositories.js"
  import authService from "../services/authService.js";
  import sessionService from "../services/sessionService.js";
 
@@ -60,4 +60,14 @@ export async function getProfile(req, res){
     } catch (error) {
         res.status(500).send(error.message);
     }
+}
+
+export async function getUserByEmail (req , res){
+    const {email} = req.params;
+         try {
+           const result = await getByEmail(email);
+           res.send(result.rows[0]);
+         } catch (error) {
+           res.status(500).send(error.message);
+         }
 }
