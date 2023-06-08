@@ -1,4 +1,4 @@
- import { signUpRepository, singInRepository, getUsersDB, getUserByIdDB } from "../repositories/user.repositories.js"
+ import { signUpRepository, singInRepository, getUsersDB, getUserByIdDB, getByEmail} from "../repositories/user.repositories.js"
  import authService from "../services/authService.js";
  import sessionService from "../services/sessionService.js";
 
@@ -24,9 +24,7 @@ export async function singIn(req, res) {
             return res.status(400).send("email ou senha estão incorretos")
         }
         
-        console.log(result.rows[0])
           const token = authService.generateWebToken(result.rows[0].user_id)
-          console.log(token);
 
           sessionService.insertTokenInDatabase(token, result.rows[0].user_id)
           res.status(200).send({
@@ -62,4 +60,18 @@ export async function getProfile(req, res){
     } catch (error) {
         res.status(500).send(error.message);
     }
+}
+
+export async function getUserByEmail (req , res){
+    const {email} = req.params;
+         try {
+           const result = await getByEmail(email);
+           if(result && result.rowCount > 0){
+                 res.send(result.rows[0]);
+           } else {
+            res.status(200).send({message:"email não encontrado"})
+           }
+         } catch (error) {
+           res.status(500).send(error.message);
+         }
 }

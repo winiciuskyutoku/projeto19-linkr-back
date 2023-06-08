@@ -3,15 +3,12 @@ import { getPostRepository, getHashtagsDB, postPostsDB, deletePostRepository, li
 import urlMetadata from "url-metadata"
 import getMetaData from "metadata-scraper"
 
-
-
 export async function postPosts(req, res) {
     const { user_id } = res.locals.session
     const { post_link, post_comment } = req.body
     try {
         const { rows: [post_id] } = await postPostsDB(user_id, post_link, post_comment)
         const hashtags = verifyHashtag(post_comment)
-        console.log(post_id)
 
         if (hashtags.length > 0) {
             postHashtagsDB(hashtags, post_id.post_id)
