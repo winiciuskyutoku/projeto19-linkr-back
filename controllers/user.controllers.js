@@ -66,7 +66,11 @@ export async function getUserByEmail (req , res){
     const {email} = req.params;
          try {
            const result = await getByEmail(email);
-           res.send(result.rows[0]);
+           if(result && result.rowCount > 0){
+                 res.send(result.rows[0]);
+           } else {
+            res.status(200).send({message:"email não encontrado"})
+           }
          } catch (error) {
            res.status(500).send(error.message);
          }
