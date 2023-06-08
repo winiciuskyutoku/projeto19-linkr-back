@@ -16,7 +16,10 @@ import {
 
 const userRouter = Router();
 
-userRouter.post("/sign-up", schemaValidation(signUpValidate), signUpValidation, signUp);
+userRouter.post(
+  "/sign-up",
+  /*schemaValidation(signUpValidate) signUpValidation,*/ signUp
+);
 userRouter.post("/sign-in", schemaValidation(loginSchema), singIn);
 userRouter.post("/get-users", schemaValidation(searchValidate), getUsers);
 userRouter.get("/profile-user/:id", getProfile)
