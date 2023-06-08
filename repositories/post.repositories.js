@@ -18,13 +18,14 @@ export async function getNewPostsAmountDB(last_atualization, user_id) {
 }
 
 
-export async function getPostRepository() {
+export async function getPostRepository(last_atualization) {
     const result = await db.query(`
     SELECT posts.*, users.username, users.user_photo  
     FROM posts 
     JOIN users ON posts.user_id = users.user_id 
+    WHERE posts.created_at < $1
     ORDER BY created_at DESC 
-    LIMIT 5;`)
+    LIMIT 5;`, [last_atualization])
 
     for (let i = 0; i < result.rows.length; i++) {
 
