@@ -9,9 +9,9 @@ import { timestampSchema } from "../schemas/timestamp.schema.js";
 
 const postsRouter = Router()
 
+postsRouter.get("/get-new-posts", authValidation, schemaValidation(timestampSchema), getNewPostsAmount)
 postsRouter.post("/post", authValidation, schemaValidation(postSchema), postPosts)
 postsRouter.get("/get-posts", getPosts)
-postsRouter.get("/get-new-posts", authValidation, schemaValidation(timestampSchema), getNewPostsAmount)
 postsRouter.delete("/delete-post/:user_id/:id", authValidation,  validateDeletePost, deletePost)
 postsRouter.post("/like-post/:id", authValidation, likePost);
 

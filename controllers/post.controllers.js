@@ -20,9 +20,9 @@ export async function postPosts(req, res) {
 
 
 export async function getPosts(req, res) {
-
+    const {last_atualization} = req.body
     try {
-        const result = await getPostRepository()
+        const result = await getPostRepository(last_atualization)
 
         res.send(result)
     } catch (err) {
@@ -34,9 +34,9 @@ export async function getNewPostsAmount(req, res) {
     const {last_atualization} = req.body
     const { user_id } = res.locals.session
     try {
-        const result = await getNewPostsAmountDB(last_atualization, user_id)
-        console.log(result.rowCount, last_atualization, user_id)
-        res.send(result.rows)
+        const {rowCount:result} = await getNewPostsAmountDB(last_atualization, user_id)
+        console.log(result.toString(), last_atualization, user_id)
+        res.send(result.toString())
     } catch (err) {
         res.status(500).send(err.message)
     }
