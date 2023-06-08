@@ -7,20 +7,20 @@ export async function findUserDB(idUser){
 export async function followersRatioDB(id, userId) {
     const result = await db.query(`
         SELECT * FROM follow WHERE 
-        "followerId" = $1 AND "followedId" = $2;`, [userId, id]);
+        follower_id = $1 AND followed_id = $2;`, [userId, id]);
     return result;
 }
 
 export async function followDB(signal, id, user_id){
-    if (signal) {
+    if (!signal) {
         await db.query(`
-            INSERT INTO follow ("followerId", "followedId")
-            VALUES ($1, $2);`, [user_id, id]
+            INSERT INTO follow (follower_id, followed_id)
+            VALUES ($1, $2) RETURNING follow_id;`, [user_id, id]
         );
         return;
     } else {
         await db.query(`
-            DELETE FROM follow WHERE "followerId" = $1 AND "followedId" = $2;`,
+            DELETE FROM follow WHERE follower_id = $1 AND followed_id = $2;`,
             [user_id, id]
         );
         return;

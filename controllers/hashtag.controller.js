@@ -14,9 +14,8 @@ export async function getHashtags(req, res) {
 export async function getHashtagsByName(req, res) {
     const hashtag = req.params.hashtag
     try {
-        console.log(hashtag)
-
         const result = await getHashtagsByNameDB(hashtag)
+        
         res.status(200).send(result.rows)
     } catch (err) {
         res.status(500).send(err.message)

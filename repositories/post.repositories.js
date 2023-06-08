@@ -36,7 +36,7 @@ export async function getPostRepository() {
                 result.rows[i].title = metadata.title
             },
                 (err) => {
-                    console.log(err)
+                    console.log('inicio', err)
                 })
     }
 
