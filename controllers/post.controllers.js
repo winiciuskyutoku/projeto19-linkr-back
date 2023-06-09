@@ -35,7 +35,7 @@ export async function getNewPostsAmount(req, res) {
     const { user_id } = res.locals.session
     try {
         const {rowCount:result} = await getNewPostsAmountDB(last_atualization, user_id)
-        console.log(result.toString(), last_atualization, user_id)
+        // console.log(result.toString(), last_atualization, user_id)
         res.send(result.toString())
     } catch (err) {
         res.status(500).send(err.message)

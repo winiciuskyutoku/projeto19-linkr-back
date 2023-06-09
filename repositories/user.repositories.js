@@ -49,6 +49,10 @@ export async function getUsersDB(search) {
             SELECT * FROM users WHERE LOWER(username) LIKE LOWER($1)
             || \'%\' OR LOWER(username) LIKE \'% \' || LOWER($1) || \'%\';`, [search]);
 }
+export async function getUsersOrderDB(users, user){
+    return await db.query(`
+    SELECT followed_id FROM follow WHERE followed_id IN (${users}) AND follower_id = $1;`, [user]);
+}
 
 export async function getUserByIdDB(id) {
     const userProfile = await db.query(`
