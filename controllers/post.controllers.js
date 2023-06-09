@@ -33,7 +33,7 @@ export async function getPostsLogin(req, res) {
     const {date} = req.params
     const { user_id } = res.locals.session
     try {
-        const result = await getPostRepositoryLogin(date)
+        const result = await getPostRepositoryLogin(date, user_id)
         res.send(result)
     } catch (err) {
         res.status(500).send(err.message)
