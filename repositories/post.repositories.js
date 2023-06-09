@@ -18,14 +18,14 @@ export async function getNewPostsAmountDB(date, user_id) {
 }
 
 
-export async function getPostRepository(date) {
+export async function getPostRepository(page) {
     const result = await db.query(`
     SELECT posts.*, users.username, users.user_photo  
     FROM posts 
     JOIN users ON posts.user_id = users.user_id 
-    WHERE posts.created_at < $1
     ORDER BY created_at DESC 
-    LIMIT 5;`, [date])
+    OFFSET $1
+    LIMIT 10;`, [page])
 
     for (let i = 0; i < result.rows.length; i++) {
 
@@ -44,16 +44,16 @@ export async function getPostRepository(date) {
     return result.rows
 }
 
-export async function getPostRepositoryLogin(date, user_id) {
+export async function getPostRepositoryLogin(page, user_id) {
     const result = await db.query(`
     SELECT posts.*, users.username, users.user_photo  
     FROM posts 
     JOIN follow ON follow.followed_id = posts.user_id
     JOIN users ON posts.user_id = users.user_id 
-    WHERE posts.created_at < $1
-    AND follow.follower_id = $2
+    WHERE follow.follower_id = $2
     ORDER BY posts.created_at DESC 
-    LIMIT 5;`, [date, user_id])
+    OFFSET $1
+    LIMIT 10;`, [page, user_id])
 
     for (let i = 0; i < result.rows.length; i++) {
 

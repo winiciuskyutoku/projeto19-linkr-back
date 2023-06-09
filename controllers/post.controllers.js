@@ -20,9 +20,9 @@ export async function postPosts(req, res) {
 
 
 export async function getPosts(req, res) {
-    const {date} = req.params
+    const {page} = req.params
     try {
-        const result = await getPostRepository(date)
+        const result = await getPostRepository(page)
         res.send(result)
     } catch (err) {
         res.status(500).send(err.message)
@@ -30,10 +30,10 @@ export async function getPosts(req, res) {
 }
 
 export async function getPostsLogin(req, res) {
-    const {date} = req.params
+    const {page} = req.params
     const { user_id } = res.locals.session
     try {
-        const result = await getPostRepositoryLogin(date, user_id)
+        const result = await getPostRepositoryLogin(page, user_id)
         res.send(result)
     } catch (err) {
         res.status(500).send(err.message)
