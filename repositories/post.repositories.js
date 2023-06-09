@@ -8,24 +8,52 @@ export async function postPostsDB(user_id, post_link, post_comment) {
                     VALUES ($1, $2, $3) RETURNING post_id`, [user_id, post_link, post_comment])
 }
 
-export async function getNewPostsAmountDB(last_atualization, user_id) {
+export async function getNewPostsAmountDB(date, user_id) {
     return await db.query(`
     SELECT post_id 
     FROM posts
     JOIN follow ON follow.followed_id = posts.user_id
     WHERE follow.follower_id = $2
-    AND posts.created_at > $1`,[last_atualization, user_id])
+    AND posts.created_at > $1`,[date, user_id])
 }
 
 
-export async function getPostRepository(last_atualization) {
+export async function getPostRepository(date) {
     const result = await db.query(`
     SELECT posts.*, users.username, users.user_photo  
     FROM posts 
     JOIN users ON posts.user_id = users.user_id 
     WHERE posts.created_at < $1
     ORDER BY created_at DESC 
-    LIMIT 5;`, [last_atualization])
+    LIMIT 5;`, [date])
+
+    for (let i = 0; i < result.rows.length; i++) {
+
+        await getMetaData(result.rows[i].post_link)
+            .then((metadata) => {
+                result.rows[i].image = metadata.image
+                result.rows[i].description = metadata.description
+                result.rows[i].url = metadata.url
+                result.rows[i].title = metadata.title
+            },
+                (err) => {
+                    console.log('inicio', err)
+                })
+    }
+
+    return result.rows
+}
+
+export async function getPostRepositoryLogin(date, user_id) {
+    const result = await db.query(`
+    SELECT posts.*, users.username, users.user_photo  
+    FROM posts 
+    JOIN follow ON follow.followed_id = posts.user_id
+    JOIN users ON posts.user_id = users.user_id 
+    WHERE posts.created_at < $1
+    AND follow.follower_id = $2
+    ORDER BY posts.created_at DESC 
+    LIMIT 5;`, [date, user_id])
 
     for (let i = 0; i < result.rows.length; i++) {
 
