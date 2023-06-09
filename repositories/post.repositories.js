@@ -14,7 +14,7 @@ export async function getNewPostsAmountDB(date, user_id) {
     FROM posts
     JOIN follow ON follow.followed_id = posts.user_id
     WHERE follow.follower_id = $2
-    AND posts.created_at > $1`,[date, user_id])
+    AND posts.created_at > $1`, [date, user_id])
 }
 
 
@@ -46,12 +46,17 @@ export async function getPostRepository(page) {
 
 export async function getPostRepositoryLogin(page, user_id) {
     const result = await db.query(`
-    SELECT posts.*, users.username, users.user_photo  
-    FROM posts 
-    JOIN follow ON follow.followed_id = posts.user_id
-    JOIN users ON posts.user_id = users.user_id 
-    WHERE follow.follower_id = $2
-    ORDER BY posts.created_at DESC 
+        SELECT p.*, u.username, u.user_photo, COALESCE(f_count.following, 0) AS following
+    FROM users u
+    JOIN follow f ON f.followed_id = u.user_id
+    LEFT JOIN (
+        SELECT follow.follower_id, COUNT(follow.follower_id) AS following
+        FROM follow
+        GROUP BY follow.follower_id
+    ) f_count ON u.user_id = f_count.follower_id
+    LEFT JOIN posts p ON p.user_id = f.followed_id
+    WHERE f.follower_id = $2
+    ORDER BY p.created_at DESC
     OFFSET $1
     LIMIT 10;`, [page, user_id])
 
@@ -104,3 +109,5 @@ export async function likePostDB(post_id, user_id) {
         return;
     }
 }
+
+
